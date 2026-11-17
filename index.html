@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>비비아르 홈페이지 제안</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,500&family=Gowun+Batang:wght@700&family=Gowun+Dodum&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@700&display=swap">
+<style>
+/* 레이아웃: 한 줄 읽기 폭(880px)의 설문지. 1부는 고르는 카드, 2부는 채우는 빈칸, 끝에 답변 요약. */
+:root {
+  --bg: #f5f6f2; --panel: #ffffff; --ink: #1c211d; --muted: #5f6861; --line: #dde2da;
+  --accent: #2c6a48; --accent-ink: #ffffff; --accent-soft: #e2efe6; --note: #8a4f1d;
+  --font-body: "Noto Sans KR", system-ui, sans-serif;
+  --font-head: "Noto Serif KR", "Noto Sans KR", serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #141815; --panel: #1c221d; --ink: #e8ece6; --muted: #9ba59c; --line: #2f3930;
+    --accent: #7cc79a; --accent-ink: #10140f; --accent-soft: #213328; --note: #e0a36a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #141815; --panel: #1c221d; --ink: #e8ece6; --muted: #9ba59c; --line: #2f3930;
+  --accent: #7cc79a; --accent-ink: #10140f; --accent-soft: #213328; --note: #e0a36a;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; }
+img { max-width: 100%; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.7; word-break: keep-all; overflow-wrap: anywhere; }
+.wrap { max-width: 880px; margin: 0 auto; padding-block: 40px 72px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: flex; flex-direction: column; gap: 40px; }
+a { color: var(--accent); }
+h1 { font-family: var(--font-head); font-size: clamp(26px, 5vw, 38px); line-height: 1.35; margin: 0; text-wrap: balance; }
+h2 { font-size: 22px; margin: 0; line-height: 1.4; text-wrap: balance; }
+.part { font-size: 13px; font-weight: 700; letter-spacing: .08em; color: var(--accent); margin: 0; }
+.intro { display: flex; flex-direction: column; gap: 14px; }
+.intro p { margin: 0; max-width: 40em; }
+.how { margin: 0; padding: 16px 20px; background: var(--accent-soft); border-radius: 12px; display: flex; flex-direction: column; gap: 4px; list-style-position: inside; }
+.muted { color: var(--muted); font-size: 14px; }
+
+.block { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 28px; display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+@media (max-width: 600px) { .block { padding: 20px 16px; } }
+fieldset { border: 0; padding: 0; margin: 0; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+legend { padding: 0; font-weight: 700; font-size: 19px; line-height: 1.45; display: flex; gap: 10px; align-items: baseline; }
+legend .n { color: var(--accent); font-variant-numeric: tabular-nums; }
+.hint { margin: 0; color: var(--muted); font-size: 14px; }
+.rec { color: var(--note); font-weight: 500; }
+
+.opts { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; }
+.opt { display: flex; flex-direction: column; gap: 10px; padding: 12px; border: 2px solid var(--line); border-radius: 14px; cursor: pointer; min-width: 0; }
+.opt:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
+.opt:has(input:focus-visible) { outline: 3px solid var(--accent); outline-offset: 2px; }
+.opt-head { display: flex; gap: 8px; align-items: center; font-weight: 700; }
+.opt p { margin: 0; font-size: 14px; color: var(--muted); }
+.opt .fit { color: var(--ink); }
+.opt a { font-size: 14px; font-weight: 500; }
+input[type="radio"], input[type="checkbox"] { accent-color: var(--accent); width: 18px; height: 18px; flex: none; margin: 0; }
+
+.list { display: flex; flex-direction: column; gap: 8px; }
+.row { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; cursor: pointer; }
+.row input { margin-top: 5px; }
+.row:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
+.row span { min-width: 0; }
+.row small { display: block; color: var(--muted); font-size: 14px; }
+.checks { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; }
+
+.field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.field > label, .field > .lab { font-weight: 700; }
+.field .why { color: var(--muted); font-size: 14px; margin: 0; }
+input[type="text"], textarea { font: inherit; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; width: 100%; min-width: 0; }
+textarea { min-height: 84px; resize: vertical; }
+input[type="text"]:focus-visible, textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.prices { display: grid; grid-template-columns: minmax(120px, 190px) 1fr; gap: 8px 12px; align-items: center; }
+.prices label { font-size: 15px; }
+@media (max-width: 520px) { .prices { grid-template-columns: 1fr; gap: 4px; } .prices input { margin-bottom: 8px; } }
+hr { border: 0; border-top: 1px solid var(--line); margin: 4px 0; width: 100%; }
+
+.send { border-color: var(--accent); }
+#out { min-height: 220px; font-size: 14px; line-height: 1.6; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+button.primary { font: inherit; font-weight: 700; cursor: pointer; background: var(--accent); color: var(--accent-ink); border: 0; border-radius: 99px; padding: 12px 26px; }
+button.primary:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+#status { font-size: 14px; color: var(--accent); font-weight: 500; }
+
+/* 디자인 미리보기: 각 방향의 고유 색이라 테마와 무관하게 고정 */
+.pv { background: var(--pv-bg); color: var(--pv-ink); border-radius: 8px; overflow: hidden; aspect-ratio: 16 / 10; max-width: 100%; display: flex; flex-direction: column; font-size: 10px; line-height: 1.4; border: 1px solid var(--line); }
+.pv-bar { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 7px 12px; border-bottom: 1px solid color-mix(in srgb, var(--pv-ink) 14%, transparent); }
+.pv-logo { font-family: "Cormorant Garamond", serif; font-weight: 600; letter-spacing: .14em; font-size: 11px; white-space: nowrap; }
+.pv-nav { opacity: .6; font-size: 8px; white-space: nowrap; overflow: hidden; }
+.pv-body { flex: 1; min-height: 0; display: grid; grid-template-columns: 1.25fr .75fr; align-items: center; gap: 8px; padding: 8px 14px; }
+.pv-eye { display: block; font-family: "Cormorant Garamond", serif; font-style: italic; color: var(--pv-accent); font-size: 11px; }
+.pv-h { display: block; font-family: var(--pv-head); font-weight: 700; font-size: 16px; line-height: 1.3; margin: 3px 0 9px; }
+.pv-btn { display: inline-block; background: var(--pv-brand); color: var(--pv-brand-ink); padding: 4px 11px; border-radius: var(--pv-r); font-size: 9px; }
+.pv-art { min-height: 0; display: flex; align-items: center; justify-content: center; height: 100%; }
+.pv-art svg { height: 100%; width: auto; max-width: 100%; display: block; }
+.pv-forest { --pv-bg: #f4f0e6; --pv-ink: #1f2a22; --pv-brand: #24402e; --pv-brand-ink: #f4f0e6; --pv-accent: #b8643c; --pv-soft: #e2e5d2; --pv-leaf: #24402e; --pv-pot: #b8643c; --pv-head: "Noto Serif KR", serif; --pv-r: 99px; }
+.pv-terra { --pv-bg: #f7ede2; --pv-ink: #33231b; --pv-brand: #9c4a29; --pv-brand-ink: #fff6ec; --pv-accent: #3f5a3c; --pv-soft: #f0dcc9; --pv-leaf: #3f5a3c; --pv-pot: #9c4a29; --pv-head: "Gowun Batang", serif; --pv-r: 99px; }
+.pv-mono { --pv-bg: #ffffff; --pv-ink: #111411; --pv-brand: #111411; --pv-brand-ink: #ffffff; --pv-accent: #2f7d4f; --pv-soft: #e6efe7; --pv-leaf: #2f7d4f; --pv-pot: #111411; --pv-head: "Noto Sans KR", sans-serif; --pv-r: 4px; }
+.pv-mono .pv-h { font-size: 18px; letter-spacing: -.02em; }
+.pv-dark { --pv-bg: #111813; --pv-ink: #ecebe2; --pv-brand: #d8c08a; --pv-brand-ink: #111813; --pv-accent: #d8c08a; --pv-soft: #1c2820; --pv-leaf: #7fa37e; --pv-pot: #d8c08a; --pv-head: "Noto Serif KR", serif; --pv-r: 99px; }
+.pv-pastel { --pv-bg: #fbf6f0; --pv-ink: #3b3a36; --pv-brand: #5f7f5c; --pv-brand-ink: #ffffff; --pv-accent: #cf7b6b; --pv-soft: #e9efdf; --pv-leaf: #5f7f5c; --pv-pot: #cf7b6b; --pv-head: "Gowun Dodum", sans-serif; --pv-r: 99px; }
+.pv-pastel .pv-h { font-weight: 400; }
+.pv-editorial { --pv-bg: #f2efe9; --pv-ink: #161616; --pv-brand: #161616; --pv-brand-ink: #f2efe9; --pv-accent: #c2452d; --pv-soft: #e6e2d9; --pv-leaf: #2f4a37; --pv-pot: #c2452d; --pv-head: "Noto Serif KR", serif; --pv-r: 0px; }
+.pv-editorial .pv-body { grid-template-columns: .8fr 1.2fr; }
+.pv-editorial .pv-art { order: -1; }
+.pv-editorial .pv-bar { border-bottom: 2px solid var(--pv-ink); }
+</style>
+</head>
+<body>
+
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="lf" overflow="visible"><path d="M0 0C5-9 18-10 28 0C18 10 5 9 0 0Z"/></symbol>
+    <symbol id="plant" viewBox="0 0 120 130">
+      <path d="M10 130V60a50 50 0 0 1 100 0v70Z" fill="var(--pv-soft)"/>
+      <path d="M60 104V58" stroke="var(--pv-leaf)" stroke-width="2" stroke-linecap="round"/>
+      <g fill="var(--pv-leaf)">
+        <use href="#lf" transform="translate(60 70) rotate(-90) scale(1.3)"/>
+        <use href="#lf" transform="translate(59 80) rotate(-140)"/>
+        <use href="#lf" transform="translate(61 80) rotate(-40)"/>
+        <use href="#lf" transform="translate(59 95) rotate(-165) scale(.85)"/>
+        <use href="#lf" transform="translate(61 95) rotate(-15) scale(.85)"/>
+      </g>
+      <rect x="44" y="102" width="32" height="6" rx="2" fill="var(--pv-pot)"/>
+      <path d="M47 108h26l-4 20H51Z" fill="var(--pv-pot)"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="wrap">
+
+  <header class="intro">
+    <p class="part">비비아르 플랜트 · 홈페이지 제작 제안</p>
+    <h1>새 홈페이지, 이렇게 만들려고 합니다</h1>
+    <p>만들기 전에 대표님 의견을 여쭙니다. 목표는 「부산 가드닝 클래스」, 「부산 플랜테리어」 같은 검색어로 찾아온 손님이 문의까지 이어지게 하는 것입니다.</p>
+    <ol class="how">
+      <li><b>1부</b>에서 마음에 드는 방향을 고릅니다.</li>
+      <li><b>2부</b>에서 아는 만큼만 빈칸을 채웁니다.</li>
+      <li>맨 아래 <b>답변 복사</b>를 눌러 카카오톡으로 보내주세요.</li>
+    </ol>
+    <p class="muted">여기 적은 내용은 자동으로 전송되지 않습니다. 복사해서 보내주셔야 전달됩니다.</p>
+  </header>
+
+  <p class="part">1부 · 고르기</p>
+
+  <section class="block">
+    <fieldset data-q="디자인 방향">
+      <legend><span class="n">1</span>어떤 분위기가 비비아르와 가장 어울리나요?</legend>
+      <p class="hint">「전체 화면으로 보기」를 누르면 그 분위기로 만든 홈페이지 시안이 열립니다. 사진 자리는 아직 비어 있습니다.</p>
+      <div class="opts">
+        <label class="opt">
+          <span class="pv pv-forest"><span class="pv-bar"><span class="pv-logo">VIVIAR PLANT</span><span class="pv-nav">클래스 · 플랜테리어 · 오시는 길</span></span><span class="pv-body"><span><span class="pv-eye">Busan Gardening Studio</span><span class="pv-h">식물로 공간의<br>분위기를 만듭니다</span><span class="pv-btn">클래스 보기</span></span><span class="pv-art"><svg viewBox="0 0 120 130"><use href="#plant"/></svg></span></span></span>
+          <span class="opt-head"><input type="radio" name="design" id="d-forest" value="A 포레스트">A 포레스트</span>
+          <p>딥그린과 크림색, 명조 제목. 차분하고 고급스러운 식물 가게.</p>
+          <p class="fit">클래스와 시공을 고르게 보여줄 때 좋습니다.</p>
+          <a href="draft.html#tone-forest">전체 화면으로 보기 →</a>
+        </label>
+        <label class="opt">
+          <span class="pv pv-terra"><span class="pv-bar"><span class="pv-logo">VIVIAR PLANT</span><span class="pv-nav">클래스 · 플랜테리어 · 오시는 길</span></span><span class="pv-body"><span><span class="pv-eye">Busan Gardening Studio</span><span class="pv-h">식물로 공간의<br>분위기를 만듭니다</span><span class="pv-btn">클래스 보기</span></span><span class="pv-art"><svg viewBox="0 0 120 130"><use href="#plant"/></svg></span></span></span>
+          <span class="opt-head"><input type="radio" name="design" id="d-terra" value="B 테라코타">B 테라코타</span>
+          <p>흙빛과 따뜻한 베이지. 손으로 만드는 공방의 온기.</p>
+          <p class="fit">원데이 클래스 손님이 많을 때 좋습니다.</p>
+          <a href="draft.html#tone-terra">전체 화면으로 보기 →</a>
+        </label>
+        <label class="opt">
+          <span class="pv pv-mono"><span class="pv-bar"><span class="pv-logo">VIVIAR PLANT</span><span class="pv-nav">클래스 · 플랜테리어 · 오시는 길</span></span><span class="pv-body"><span><span class="pv-eye">Busan Gardening Studio</span><span class="pv-h">식물로 공간의<br>분위기를 만듭니다</span><span class="pv-btn">클래스 보기</span></span><span class="pv-art"><svg viewBox="0 0 120 130"><use href="#plant"/></svg></span></span></span>
+          <span class="opt-head"><input type="radio" name="design" id="d-mono" value="C 모던">C 모던</span>
+          <p>흰 바탕에 검정 글씨, 초록 포인트. 군더더기 없이 깔끔합니다.</p>
+          <p class="fit">사진이 좋을수록 살아나는 방향입니다.</p>
+          <a href="draft.html#tone-mono">전체 화면으로 보기 →</a>
+        </label>
+        <label class="opt">
+          <span class="pv pv-dark"><span class="pv-bar"><span class="pv-logo">VIVIAR PLANT</span><span class="pv-nav">클래스 · 플랜테리어 · 오시는 길</span></span><span class="pv-body"><span><span class="pv-eye">Busan Gardening Studio</span><span class="pv-h">식물로 공간의<br>분위기를 만듭니다</span><span class="pv-btn">시공 문의</span></span><span class="pv-art"><svg viewBox="0 0 120 130"><use href="#plant"/></svg></span></span></span>
+          <span class="opt-head"><input type="radio" name="design" id="d-dark" value="D 다크">D 다크</span>
+          <p>짙은 녹색 바탕에 골드. 호텔 로비 같은 무게감.</p>
+          <p class="fit">병원, 기업 대상 플랜테리어 시공을 앞세울 때 좋습니다.</p>
+          <a href="draft.html#tone-dark">전체 화면으로 보기 →</a>
+        </label>
+        <label class="opt">
+          <span class="pv pv-pastel"><span class="pv-bar"><span class="pv-logo">VIVIAR PLANT</span><span class="pv-nav">클래스 · 플랜테리어 · 오시는 길</span></span><span class="pv-body"><span><span class="pv-eye">Busan Gardening Studio</span><span class="pv-h">식물로 공간의<br>분위기를 만듭니다</span><span class="pv-btn">원데이 클래스</span></span><span class="pv-art"><svg viewBox="0 0 120 130"><use href="#plant"/></svg></span></span></span>
+          <span class="opt-head"><input type="radio" name="design" id="d-pastel" value="E 파스텔">E 파스텔</span>
+          <p>세이지 그린과 코랄, 둥근 모서리. 밝고 친근합니다.</p>
+          <p class="fit">데이트, 가족 단위 원데이 클래스에 어울립니다.</p>
+          <a href="draft.html#tone-pastel">전체 화면으로 보기 →</a>
+        </label>
+        <label class="opt">
+          <span class="pv pv-editorial"><span class="pv-bar"><span class="pv-logo">VIVIAR PLANT</span><span class="pv-nav">클래스 · 플랜테리어 · 오시는 길</span></span><span class="pv-body"><span><span class="pv-eye">Busan Gardening Studio</span><span class="pv-h">식물로 공간의<br>분위기를 만듭니다</span><span class="pv-btn">작업 사례</span></span><span class="pv-art"><svg viewBox="0 0 120 130"><use href="#plant"/></svg></span></span></span>
+          <span class="opt-head"><input type="radio" name="design" id="d-editorial" value="F 매거진">F 매거진</span>
+          <p>굵은 선과 각진 모서리, 붉은 포인트. 잡지 화보처럼 작품이 주인공.</p>
+          <p class="fit">시공 사례 사진이 많을 때 좋습니다.</p>
+          <a href="draft.html#tone-editorial">전체 화면으로 보기 →</a>
+        </label>
+      </div>
+      <label class="row"><input type="radio" name="design" id="d-any" value="잘 모르겠음, 추천 요청"><span>잘 모르겠어요. 추천해 주세요.</span></label>
+      <div class="field"><label for="d-memo">참고하고 싶은 홈페이지나 원하는 느낌이 있으면 적어주세요</label><input type="text" id="d-memo" class="extra" placeholder="예: A와 C의 중간, ○○ 홈페이지처럼"></div>
+    </fieldset>
+  </section>
+
+  <section class="block">
+    <fieldset data-q="메인 문구">
+      <legend><span class="n">2</span>첫 화면에 크게 들어갈 문구를 골라주세요</legend>
+      <div class="list">
+        <label class="row"><input type="radio" name="copy" id="c-1" value="식물로 공간의 분위기를 만듭니다"><span>식물로 공간의 분위기를 만듭니다<small>지금 인스타그램 소개에 쓰시는 문구입니다.</small></span></label>
+        <label class="row"><input type="radio" name="copy" id="c-2" value="부산에서 배우는 가드닝, 비비아르 플랜트"><span>부산에서 배우는 가드닝, 비비아르 플랜트<small>검색어가 그대로 들어가 클래스 손님에게 분명합니다.</small></span></label>
+        <label class="row"><input type="radio" name="copy" id="c-3" value="초록이 필요한 공간에, 비비아르"><span>초록이 필요한 공간에, 비비아르<small>플랜테리어 시공 쪽에 무게를 둡니다.</small></span></label>
+        <label class="row"><input type="radio" name="copy" id="c-4" value="식물을 배우고, 공간을 가꾸는 곳"><span>식물을 배우고, 공간을 가꾸는 곳<small>클래스와 시공을 함께 말합니다.</small></span></label>
+      </div>
+      <div class="field"><label for="c-own">직접 쓰고 싶은 문구</label><input type="text" id="c-own" class="extra"></div>
+    </fieldset>
+  </section>
+
+  <section class="block">
+    <fieldset data-q="앞세울 서비스">
+      <legend><span class="n">3</span>홈페이지에서 무엇을 가장 앞에 둘까요?</legend>
+      <div class="list">
+        <label class="row"><input type="radio" name="lead" id="l-class" value="가드닝 클래스 중심"><span>가드닝 클래스<small>베이직, 원데이, 자격증반 수강생 모집이 우선입니다.</small></span></label>
+        <label class="row"><input type="radio" name="lead" id="l-space" value="플랜테리어 시공·관리 중심"><span>플랜테리어 시공과 식물 관리<small>병원, 사무실, 매장 같은 공간 의뢰가 우선입니다.</small></span></label>
+        <label class="row"><input type="radio" name="lead" id="l-both" value="클래스와 시공 균형"><span>둘 다 비슷하게<small>첫 화면에서 두 갈래로 나눠 안내합니다.</small></span></label>
+        <label class="row"><input type="radio" name="lead" id="l-shop" value="식물·꽃 판매 중심"><span>식물과 꽃 판매<small>매장 방문과 스마트스토어 주문이 우선입니다.</small></span></label>
+      </div>
+    </fieldset>
+  </section>
+
+  <section class="block">
+    <fieldset data-q="사이트 구성">
+      <legend><span class="n">4</span>사이트 크기는 어느 쪽이 좋을까요?</legend>
+      <div class="list">
+        <label class="row"><input type="radio" name="size" id="s-multi" value="여러 페이지형"><span>여러 페이지형 <span class="rec">(추천)</span><small>클래스, 플랜테리어, 작업 사례, 소식을 각각 따로 둡니다. 페이지마다 검색어를 하나씩 맡길 수 있어 검색 노출에 유리합니다.</small></span></label>
+        <label class="row"><input type="radio" name="size" id="s-one" value="한 페이지형"><span>한 페이지형<small>스크롤 한 번에 다 보입니다. 빨리 만들 수 있지만 검색어를 여러 개 잡기는 어렵습니다.</small></span></label>
+      </div>
+    </fieldset>
+  </section>
+
+  <section class="block">
+    <fieldset data-q="넣고 싶은 기능">
+      <legend><span class="n">5</span>넣고 싶은 것을 모두 골라주세요</legend>
+      <div class="checks">
+        <label class="row"><input type="checkbox" id="f-gallery" value="시공 사례 갤러리"><span>시공 사례 갤러리</span></label>
+        <label class="row"><input type="checkbox" id="f-schedule" value="클래스 일정표"><span>클래스 일정표</span></label>
+        <label class="row"><input type="checkbox" id="f-review" value="수강 후기"><span>수강 후기</span></label>
+        <label class="row"><input type="checkbox" id="f-works" value="수강생 작품"><span>수강생 작품</span></label>
+        <label class="row"><input type="checkbox" id="f-news" value="소식·식물 관리 글"><span>소식, 식물 관리 글</span></label>
+        <label class="row"><input type="checkbox" id="f-kakao" value="카카오톡 문의 버튼"><span>카카오톡 문의 버튼</span></label>
+        <label class="row"><input type="checkbox" id="f-store" value="스마트스토어 예약 연결"><span>스마트스토어 예약 연결</span></label>
+        <label class="row"><input type="checkbox" id="f-insta" value="인스타그램 연결"><span>인스타그램 연결</span></label>
+      </div>
+    </fieldset>
+  </section>
+
+  <p class="part">2부 · 알려주실 내용</p>
+
+  <section class="block">
+    <h2>운영 정보</h2>
+    <div class="field">
+      <label for="q-hours">영업시간과 휴무일</label>
+      <p class="why">카카오맵에는 월~금 11~19시(토·일 휴무), 블로그 후기에는 월~토 11~20시(일 휴무)로 나옵니다.</p>
+      <input type="text" id="q-hours" data-q="영업시간·휴무일">
+    </div>
+    <div class="field"><label for="q-park">주차할 수 있나요?</label><input type="text" id="q-park" data-q="주차"></div>
+    <fieldset data-q="예약·문의 연결처">
+      <legend style="font-size:16px">예약과 문의는 어디로 연결할까요? (여러 개 가능)</legend>
+      <div class="checks">
+        <label class="row"><input type="checkbox" id="r-kakao" value="카카오톡 채널"><span>카카오톡 채널</span></label>
+        <label class="row"><input type="checkbox" id="r-store" value="스마트스토어"><span>스마트스토어</span></label>
+        <label class="row"><input type="checkbox" id="r-tel" value="전화"><span>전화</span></label>
+        <label class="row"><input type="checkbox" id="r-naver" value="네이버 예약"><span>네이버 예약</span></label>
+      </div>
+    </fieldset>
+    <div class="field">
+      <label for="q-domain">홈페이지 주소(도메인)</label>
+      <p class="why">가지고 계신 주소가 있으면 적어주세요. 없으면 원하는 주소를 적어주세요. 예: viviarplant.com</p>
+      <input type="text" id="q-domain" data-q="도메인">
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>클래스</h2>
+    <div class="field">
+      <span class="lab">과정별 수강료</span>
+      <p class="why">기간이나 횟수도 함께 적어주시면 좋습니다. 홈페이지에 공개하고 싶지 않으면 「문의」라고 적어주세요.</p>
+      <div class="prices">
+        <label for="p-basic">베이직 가드닝 (4주)</label><input type="text" id="p-basic" data-q="수강료 - 베이직">
+        <label for="p-oneday">원데이 클래스</label><input type="text" id="p-oneday" data-q="수강료 - 원데이">
+        <label for="p-adv">심화 과정</label><input type="text" id="p-adv" data-q="수강료 - 심화">
+        <label for="p-cert">테라리움 지도사 자격증반</label><input type="text" id="p-cert" data-q="수강료 - 자격증반">
+        <label for="p-biz">창업반</label><input type="text" id="p-biz" data-q="수강료 - 창업반">
+      </div>
+    </div>
+    <div class="field"><label for="q-sched">수업 일정은 어떻게 잡나요?</label><input type="text" id="q-sched" data-q="수업 일정" placeholder="예: 상담 후 개별 조율, 매주 토요일 고정"></div>
+    <div class="field"><label for="q-prep">준비물과 재료비</label><input type="text" id="q-prep" data-q="준비물·재료비" placeholder="예: 준비물 없음, 재료비 포함"></div>
+    <div class="field"><label for="q-refund">예약 변경과 환불 기준</label><input type="text" id="q-refund" data-q="변경·환불 기준"></div>
+    <fieldset data-q="키즈 클래스">
+      <legend style="font-size:16px">키즈 가드닝 클래스도 운영하시나요?</legend>
+      <div class="checks">
+        <label class="row"><input type="radio" name="kids" id="k-yes" value="운영함"><span>운영합니다</span></label>
+        <label class="row"><input type="radio" name="kids" id="k-no" value="운영 안 함"><span>하지 않습니다</span></label>
+      </div>
+    </fieldset>
+  </section>
+
+  <section class="block">
+    <h2>경력과 작업 사례</h2>
+    <div class="field">
+      <label for="q-cases">대표 시공 사례 3~5건</label>
+      <p class="why">장소와 작업 내용만 간단히 적어주세요. 손님이 가장 믿는 부분입니다.</p>
+      <textarea id="q-cases" data-q="시공 사례" placeholder="예: ○○병원 로비 실내 정원, ○○ 공유오피스 정기 관리"></textarea>
+    </div>
+    <div class="field">
+      <label for="q-flow">시공은 보통 어떤 순서로 진행되나요?</label>
+      <textarea id="q-flow" data-q="시공 진행 순서" placeholder="예: 상담 → 현장 방문 → 제안 → 시공 → 정기 관리"></textarea>
+    </div>
+    <div class="field">
+      <label for="q-career">2023년 이후 새로 생긴 자격, 경력, 출강 이력</label>
+      <p class="why">2023년 인터뷰 기사에 조경기능사 도전 계획이 있었습니다. 취득하셨다면 꼭 넣겠습니다.</p>
+      <textarea id="q-career" data-q="새 자격·경력"></textarea>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>사진과 로고</h2>
+    <p class="hint">파일은 이 페이지에서 받을 수 없습니다. 카카오톡이나 메일로 원본을 따로 보내주세요.</p>
+    <fieldset data-q="보낼 수 있는 사진">
+      <legend style="font-size:16px">보내주실 수 있는 사진을 골라주세요 (10~20장이면 충분합니다)</legend>
+      <div class="checks">
+        <label class="row"><input type="checkbox" id="ph-shop" value="매장 전경·내부"><span>매장 전경과 내부</span></label>
+        <label class="row"><input type="checkbox" id="ph-class" value="수업 장면"><span>수업 장면</span></label>
+        <label class="row"><input type="checkbox" id="ph-case" value="시공 사례"><span>시공 사례 (전후 사진이면 더 좋습니다)</span></label>
+        <label class="row"><input type="checkbox" id="ph-works" value="수강생 작품"><span>수강생 작품</span></label>
+        <label class="row"><input type="checkbox" id="ph-me" value="대표 프로필"><span>대표 프로필</span></label>
+      </div>
+    </fieldset>
+    <fieldset data-q="인스타그램 사진 사용">
+      <legend style="font-size:16px">인스타그램에 올리신 사진을 홈페이지에 써도 될까요?</legend>
+      <div class="checks">
+        <label class="row"><input type="radio" name="insta" id="i-yes" value="사용 가능"><span>써도 됩니다</span></label>
+        <label class="row"><input type="radio" name="insta" id="i-no" value="사용 불가"><span>따로 보내겠습니다</span></label>
+      </div>
+    </fieldset>
+    <fieldset data-q="로고">
+      <legend style="font-size:16px">로고 파일이 있나요?</legend>
+      <div class="checks">
+        <label class="row"><input type="radio" name="logo" id="lg-yes" value="있음, 보내겠음"><span>있습니다. 보내겠습니다</span></label>
+        <label class="row"><input type="radio" name="logo" id="lg-no" value="없음"><span>없습니다</span></label>
+        <label class="row"><input type="radio" name="logo" id="lg-new" value="새로 만들고 싶음"><span>새로 만들고 싶습니다</span></label>
+      </div>
+    </fieldset>
+    <fieldset data-q="네이버 플레이스 캡처">
+      <legend style="font-size:16px">네이버 플레이스 화면 캡처</legend>
+      <p class="hint">소개글, 메뉴(가격), 리뷰 탭을 캡처해서 보내주시면 내용을 그대로 반영합니다.</p>
+      <label class="row"><input type="checkbox" id="np-ok" value="캡처해서 보내겠음"><span>캡처해서 보내겠습니다</span></label>
+    </fieldset>
+    <hr>
+    <div class="field"><label for="q-etc">그 밖에 바라는 점</label><textarea id="q-etc" data-q="기타 요청"></textarea></div>
+  </section>
+
+  <section class="block send">
+    <h2>답변 보내기</h2>
+    <p class="hint">고르고 적은 내용이 아래에 정리됩니다. 복사해서 카카오톡에 붙여넣어 보내주세요.</p>
+    <textarea id="out" readonly aria-label="답변 요약"></textarea>
+    <div class="actions">
+      <button type="button" class="primary" id="copy">답변 복사</button>
+      <span id="status" role="status" aria-live="polite"></span>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function () {
+  var KEY = 'viviar-proposal-v1';
+  var out = document.getElementById('out');
+  var status = document.getElementById('status');
+  var controls = Array.prototype.slice.call(document.querySelectorAll('input[id], textarea[id]')).filter(function (el) { return el.id !== 'out'; });
+
+  function restore() {
+    var saved = null;
+    try { saved = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) {}
+    if (!saved) return;
+    controls.forEach(function (el) {
+      if (!(el.id in saved)) return;
+      if (el.type === 'radio' || el.type === 'checkbox') el.checked = !!saved[el.id];
+      else el.value = saved[el.id];
+    });
+  }
+  function save() {
+    var data = {};
+    controls.forEach(function (el) {
+      data[el.id] = (el.type === 'radio' || el.type === 'checkbox') ? el.checked : el.value;
+    });
+    try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) {}
+  }
+  function summary() {
+    var lines = ['[비비아르 홈페이지 답변]'];
+    var answered = 0;
+    document.querySelectorAll('[data-q]').forEach(function (el) {
+      var vals = [];
+      if (el.tagName === 'FIELDSET') {
+        el.querySelectorAll('input:checked').forEach(function (i) { vals.push(i.value); });
+        el.querySelectorAll('.extra').forEach(function (i) { if (i.value.trim()) vals.push('(메모) ' + i.value.trim()); });
+      } else if (el.value.trim()) {
+        vals.push(el.value.trim());
+      }
+      if (vals.length) { answered++; lines.push('· ' + el.getAttribute('data-q') + ': ' + vals.join(', ')); }
+    });
+    if (!answered) lines.push('(아직 고르거나 적은 내용이 없습니다)');
+    return lines.join('\n');
+  }
+  function refresh() { out.value = summary(); }
+
+  restore();
+  refresh();
+  document.addEventListener('input', function () { save(); refresh(); status.textContent = ''; });
+  document.addEventListener('change', function () { save(); refresh(); });
+
+  document.getElementById('copy').addEventListener('click', function () {
+    refresh();
+    function fallback() {
+      out.focus(); out.select();
+      status.textContent = '자동 복사가 안 됩니다. 선택된 글을 직접 복사해 주세요.';
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(out.value).then(function () {
+        status.textContent = '복사했습니다. 카카오톡에 붙여넣어 보내주세요.';
+      }).catch(fallback);
+    } else { fallback(); }
+  });
+})();
+</script>
+
+</body>
+</html>
